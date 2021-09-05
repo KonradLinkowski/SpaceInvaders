@@ -1,59 +1,42 @@
-import { init, Input } from './gamepad';
-import { slerp, magnitude, normalize, Vector } from './vector';
+import { log } from './debug';
+import { init as initGamepad } from './gamepad';
+import { init as initRenderer } from './render';
+import { init as initPhysics } from './physics';
 
 const $canvas = document.querySelector('#canvas') as HTMLCanvasElement;
-const $debug = document.querySelector('#debug');
 
-const ctx = $canvas.getContext('2d');
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
 
-$canvas.width = 500;
-$canvas.height = 500;
-
-let currentPosition: Vector = {
-  x: 0,
-  y: 1
-};
-
-let destination: Vector = {
-  x: 1,
-  y: 0
-};
-
-const eps = 0.3;
-
-const { getInput } = init(() => {
+const { getInput } = initGamepad(() => {
   window.requestAnimationFrame(update);
 });
+
+const { calculate } = initPhysics();
+
+const { draw } = initRenderer($canvas);
 
 let lastTime = 0;
 
 function update(time: number) {
-  const deltaTime = time - lastTime;
+  const deltaTime = (time - lastTime) / 1000;
   lastTime = time;
 
   const input = getInput();
-  physics(input, deltaTime);
-  draw();
+  const {
+    playerPosition,
+    projectiles
+  } = calculate({
+    input, deltaTime
+  });
+  draw({
+    playerPosition,
+    projectiles
+  });
   window.requestAnimationFrame(update);
 }
 
-function physics(input: Input, deltaTime: number) {
-  const mag = magnitude(input.axes);
-  if (mag > eps) {
-    destination = normalize(input.axes);
-  }
-  currentPosition = slerp(currentPosition, destination, deltaTime / 100);
-}
-
-function draw() {
-  ctx.clearRect(0, 0, $canvas.width, $canvas.height);
-  ctx.fillStyle = 'red';
-  ctx.beginPath();
-  ctx.arc(
-    (currentPosition.x) * 50 + $canvas.width / 2,
-    (currentPosition.y) * 50 + $canvas.height / 2,
-    20, 0, Math.PI * 2
-  );
-  ctx.closePath();
-  ctx.fill();
+function resizeCanvas() {
+  $canvas.width = window.innerWidth;
+  $canvas.height = window.innerHeight;
 }

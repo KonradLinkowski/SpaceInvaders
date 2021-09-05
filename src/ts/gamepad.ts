@@ -1,8 +1,11 @@
+import { log } from './debug';
+
 export interface Input {
   axes: {
     x: number;
     y: number;
   };
+  fire: boolean;
 }
 
 export function init(connected: () => void) {
@@ -24,15 +27,19 @@ export function init(connected: () => void) {
 }
 
 function getInput(): Input {
-  const gamepad = navigator.getGamepads()[0];
-  if (gamepad) {
-    const axes = {
-      x: gamepad.axes[0],
-      y: gamepad.axes[1]
-    };
-    
-    return {
-      axes
-    };
-  }
+  const gamepads = navigator.getGamepads();
+  if (!gamepads) return;
+  const gamepad = Object.values(gamepads).find(gp => gp);
+  if (!gamepad) return;
+
+
+  const axes = {
+    x: gamepad.axes[0],
+    y: gamepad.axes[1]
+  };
+  
+  return {
+    axes,
+    fire: [0, 5, 7].map(i => gamepad.buttons[i]).some(button => button.pressed)
+  };
 }

@@ -23,9 +23,11 @@ export function slerp(start: Vector, end: Vector, percent: number): Vector
   const dt = dot(start, end);
   const theta = Math.acos(dt) * percent;
   const relative = normalize(subtract(end, mulFactor(start, dt)));
-  return add(
-    mulFactor(start, Math.cos(theta)),
-    mulFactor(relative, Math.sin(theta))
+  return normalize(
+    add(
+      mulFactor(start, Math.cos(theta)),
+      mulFactor(relative, Math.sin(theta))
+    )
   );
 }
 

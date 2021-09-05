@@ -1,3 +1,10 @@
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 #debug {
   position: fixed;
   top: 0;
