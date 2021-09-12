@@ -1,8 +1,8 @@
 import { GAMEPAD_EPSILON, PLAYER_SPEED, FIRE_COOLDOWN, PROJECTILE_SPEED, PROJECTILE_SIZE, ENEMY_SIZE, PLAYER_OFFSET } from './config';
 import { advanceEnemy, createEnemy, Enemy, Type } from './enemy';
 import { Input } from './input';
-import { distance, PolarVector, toPolarVector } from './polar-vector';
-import { magnitude, slerp, mulFactor, Vector, normalize } from './vector';
+import { distance, PolarVector, toPolarVector } from './math/polar-vector';
+import { magnitude, slerp, mulFactor, Vector, normalize } from './math/vector';
 
 export interface Projectile {
   position: PolarVector;

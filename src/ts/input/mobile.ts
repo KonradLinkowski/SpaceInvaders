@@ -1,6 +1,6 @@
 import { InitFunctionOutput, Input } from '.';
 import { log } from '../debug';
-import { normalize, Vector } from '../vector';
+import { Vector, normalize } from '../math/vector';
 
 let position: Vector = {
   x: 0,

@@ -3,7 +3,7 @@
     "start": "parcel ./src/index.html",
     "build": "rm -rf build && parcel build -d build --public-url ./ --no-source-maps ./src/index.html",
     "zip": "rm -f bundle.zip && cd build && bestzip ../bundle.zip *",
-    "make": "yarn build && yarn zip"
+    "bundle": "yarn build && yarn zip"
   },
   "devDependencies": {
     "bestzip": "^2.2.0",

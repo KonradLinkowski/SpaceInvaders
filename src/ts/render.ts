@@ -1,7 +1,7 @@
 import { ENEMY_SIZE, PLAYER_SIZE, PROJECTILE_SIZE, WORLD_SIZE } from './config';
 import { Enemy } from './enemy';
 import { Projectile } from './physics';
-import { Vector } from './vector';
+import { Vector } from './math/vector';
 import { toRelativeVector } from './world';
 
 export interface DrawData {

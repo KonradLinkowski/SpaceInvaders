@@ -1,4 +1,4 @@
-import { PolarVector, toVector } from './polar-vector';
+import { PolarVector, toVector } from './math/polar-vector';
 
 export enum Type {
   Basic = 'Basic',
