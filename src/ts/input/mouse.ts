@@ -37,8 +37,9 @@ export function init(): InitFunctionOutput {
   }
   
   function onMouseMove({ clientX, clientY }: MouseEvent) {
-    const x = clientX - (canvas.width / 2);
-    const y = clientY - (canvas.height / 2);
+    const rect = canvas.getBoundingClientRect();
+    const x = clientX - (rect.x + rect.width / 2);
+    const y = clientY - (rect.y + rect.height / 2);
     const norm = normalize({ x, y });
 
     position = norm;

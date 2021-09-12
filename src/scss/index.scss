@@ -3,6 +3,9 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #debug {
@@ -13,7 +16,8 @@ body {
 }
 
 #canvas {
-  border: 1px solid black;
+  height: 100vmin;
+  width: 100vmin;
 }
 
 .mobile {

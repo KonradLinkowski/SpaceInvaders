@@ -3,11 +3,11 @@ import { init as initInput, InputSource } from './input';
 import { init as initRenderer } from './render';
 import { init as initPhysics } from './physics';
 import { init as initMenu } from './menu';
+import { WORLD_SIZE } from './config';
 
 const $canvas = document.querySelector('#canvas') as HTMLCanvasElement;
-
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
+$canvas.width = WORLD_SIZE;
+$canvas.height = WORLD_SIZE;
 
 let menuPause = true;
 let inputPause = true;
@@ -47,17 +47,14 @@ function update(time: number) {
   const input = getInput();
   const {
     playerPosition,
-    projectiles
+    projectiles,
+    enemies
   } = calculate({
     input, deltaTime
   });
   draw({
     playerPosition,
-    projectiles
+    projectiles,
+    enemies
   });
-}
-
-function resizeCanvas() {
-  $canvas.width = window.innerWidth;
-  $canvas.height = window.innerHeight;
 }

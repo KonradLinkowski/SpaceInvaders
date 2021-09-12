@@ -1,10 +1,11 @@
-import { GAMEPAD_EPSILON, PLAYER_SPEED, FIRE_COOLDOWN, PROJECTILE_SPEED } from './config';
-import { Input } from './gamepad';
-import { magnitude, slerp, add, mulFactor, Vector, normalize } from './vector';
+import { GAMEPAD_EPSILON, PLAYER_SPEED, FIRE_COOLDOWN, PROJECTILE_SPEED, PROJECTILE_SIZE, ENEMY_SIZE, PLAYER_OFFSET } from './config';
+import { advanceEnemy, createEnemy, Enemy, Type } from './enemy';
+import { Input } from './input';
+import { distance, PolarVector, toPolarVector } from './polar-vector';
+import { magnitude, slerp, mulFactor, Vector, normalize } from './vector';
 
 export interface Projectile {
-  position: Vector;
-  direction: Vector;
+  position: PolarVector;
 }
 
 export interface PhysicsData {
@@ -15,6 +16,7 @@ export interface PhysicsData {
 export interface PhysicsOutput {
   playerPosition: Vector;
   projectiles: Projectile[];
+  enemies: Enemy[];
 }
 
 let currentPosition: Vector = {
@@ -28,7 +30,18 @@ let destination: Vector = {
 };
 
 
-const projectiles = [];
+const projectiles: Projectile[] = [];
+
+const enemies: Enemy[] = [
+  createEnemy(Type.Basic),
+  createEnemy(Type.ZigZag),
+  createEnemy(Type.ZigZag),
+  createEnemy(Type.ZigZag),
+  createEnemy(Type.ZigZag),
+  createEnemy(Type.ZigZag),
+  createEnemy(Type.ZigZag),
+  createEnemy(Type.ZigZag),
+];
 
 let fireTimer = 0;
 
@@ -51,17 +64,39 @@ function calculate({ input, deltaTime }: PhysicsData): PhysicsOutput {
   if (input.fire && fireTimer > FIRE_COOLDOWN) {
     fireTimer = 0;
     projectiles.push({
-      position: { ...currentPosition },
-      direction: { ...currentPosition }
+      position: { ...toPolarVector(mulFactor(currentPosition, 50)) }
     })
   }
 
   for (const projectile of projectiles) {
-    projectile.position = add(projectile.position, (mulFactor(projectile.direction, deltaTime * PROJECTILE_SPEED)));
+    projectile.position.radius += deltaTime * PROJECTILE_SPEED;
+  }
+
+  for (const enemy of enemies) {
+    advanceEnemy({
+      enemy,
+      deltaTime,
+    });
+  }
+
+
+  projectiles:
+  for (const pKey in projectiles) {
+    for (const eKey in enemies) {
+      const projectile = projectiles[pKey];
+      const enemy = enemies[eKey];
+      const dist = distance(projectile.position, enemy.position);
+      if (dist < PROJECTILE_SIZE + ENEMY_SIZE) {
+        projectiles.splice(+pKey, 1);
+        enemies.splice(+eKey, 1);
+        continue projectiles;
+      }
+    }
   }
 
   return {
-    playerPosition: currentPosition,
-    projectiles
+    playerPosition: mulFactor(currentPosition, PLAYER_OFFSET),
+    projectiles,
+    enemies
   };
 }

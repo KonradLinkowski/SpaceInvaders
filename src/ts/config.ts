@@ -1,4 +1,9 @@
 export const FIRE_COOLDOWN = 0.1;
-export const PROJECTILE_SPEED = 20;
+export const PROJECTILE_SPEED = 1000;
+export const PROJECTILE_SIZE = 5;
 export const PLAYER_SPEED = 10;
 export const GAMEPAD_EPSILON = 0.3;
+export const ENEMY_SIZE = 10;
+export const WORLD_SIZE = 1000;
+export const PLAYER_SIZE = 20;
+export const PLAYER_OFFSET = 50;

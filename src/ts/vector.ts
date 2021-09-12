@@ -1,5 +1,4 @@
-import { clamp } from './math';
-
+import { clamp, lerp as numberLerp } from './math';
 export interface Vector {
   x: number;
   y: number;
@@ -31,6 +30,13 @@ export function slerp(start: Vector, end: Vector, percent: number): Vector
   );
 }
 
+export function lerp(start: Vector, end: Vector, percent: number) {
+  return {
+    x: numberLerp(start.x, end.x, percent),
+    y: numberLerp(start.y, end.y, percent)
+  };
+}
+
 export function dot(a: Vector, b: Vector) {
   return a.x * b.x + a.y * b.y;
 }
@@ -54,4 +60,11 @@ export function mulFactor(vector: Vector, factor: number) {
     x: vector.x * factor,
     y: vector.y * factor
   };
+}
+
+export function distance(a: Vector, b: Vector): number {
+  return magnitude({
+    x: a.x - b.x,
+    y: a.y - b.y
+  });
 }
