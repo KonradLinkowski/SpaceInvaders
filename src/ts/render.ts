@@ -1,13 +1,15 @@
-import { ENEMY_SIZE, PLAYER_SIZE, PROJECTILE_SIZE, WORLD_SIZE } from './config';
+import { ENEMY_SIZE, PLAYER_SIZE, PROJECTILE_SIZE, WORLD_SIZE, PARTICLE_SIZE, PARTICLE_LIFESPAN, CENTER_RADIUS } from './config';
 import { Enemy } from './enemy';
 import { Projectile } from './physics';
 import { Vector } from './math/vector';
 import { toRelativeVector } from './world';
+import { Particle } from './particle';
 
 export interface DrawData {
   playerPosition: Vector;
   projectiles: Projectile[];
   enemies: Enemy[];
+  particles: Particle[];
 }
 
 export function init($canvas: HTMLCanvasElement) {
@@ -18,13 +20,18 @@ export function init($canvas: HTMLCanvasElement) {
   };
 }
 
-function draw($canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, { playerPosition, projectiles, enemies }: DrawData) {
+function draw(
+  $canvas: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+  { playerPosition, projectiles, enemies, particles }: DrawData
+) {
   ctx.globalCompositeOperation = 'source-over';
   ctx.clearRect(0, 0, $canvas.width, $canvas.height);
   drawCenter();
   drawPlayer();
   drawProjectiles();
   drawEnemies();
+  drawParticles();
   drawMask();
 
   function drawMask() {
@@ -49,6 +56,14 @@ function draw($canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, { playe
       $canvas.height / 2,
       5,
       'purple'
+    );
+
+    drawCircle(
+      $canvas.width / 2,
+      $canvas.height / 2,
+      CENTER_RADIUS,
+      'purple',
+      true
     );
   }
  
@@ -85,11 +100,29 @@ function draw($canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, { playe
     }
   }
 
-  function drawCircle(x: number, y: number, r: number, color: string) {
-    ctx.fillStyle = color;
+  function drawParticles() {
+    for (const particle of particles) {
+      const color = `rgba(255, 0, 255, ${1 - particle.age / PARTICLE_LIFESPAN})`;
+      drawCircle(
+        particle.position.x,
+        particle.position.y,
+        PARTICLE_SIZE,
+        color
+      );
+    }
+  }
+
+  function drawCircle(x: number, y: number, r: number, color: string, hollow?: boolean) {
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.closePath();
-    ctx.fill();
+    if (hollow) {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 3;
+      ctx.stroke();
+    } else {
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
   }
 }

@@ -59,3 +59,14 @@ const movePatterns: { [type in Type]: (data: NextPositionData) => PolarVector } 
     return newPos;
   }
 }
+
+export function getValue(type: Type): number {
+  switch (type) {
+    case Type.Basic:
+      return 5;
+    case Type.Spinner:
+      return 10;
+    case Type.ZigZag:
+      return 15;
+  }
+}

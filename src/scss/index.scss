@@ -6,6 +6,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh;
 }
 
 #debug {
@@ -18,6 +19,15 @@ body {
 #canvas {
   height: 100vmin;
   width: 100vmin;
+}
+
+.score {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 30px;
+  user-select: none;
 }
 
 .mobile {
@@ -106,6 +116,29 @@ body {
     border: 1px solid black;
     padding: 2rem;
     background-color: white;
+  }
+}
+
+.game-over {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  user-select: none;
+
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  &-header {
+    font-size: 50px;
+  }
+
+  &-score {
+    font-size: 30px;
   }
 }
 

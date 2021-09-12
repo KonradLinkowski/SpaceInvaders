@@ -2,15 +2,7 @@ import { InputSource } from './input';
 
 export function init(start: () => void, stop: () => void, inputChange: (source: InputSource) => void) {
   const $menu = document.querySelector('#menu') as HTMLElement;
-  window.addEventListener('keydown', ({ key }: KeyboardEvent) => {
-    if (key == 'Escape') {
-      if ($menu.hidden) {
-        show();
-      } else {
-        hide();
-      }
-    }
-  });
+  window.addEventListener('keydown', handleKeyDown);
 
   const $startButton = document.querySelector('#start-button') as HTMLButtonElement;
   $startButton.addEventListener('click', onStart);
@@ -39,5 +31,25 @@ export function init(start: () => void, stop: () => void, inputChange: (source: 
     $menu.hidden = true;
     start();
   }
+
+  function handleKeyDown({ key }: KeyboardEvent) {
+    if (key == 'Escape') {
+      if ($menu.hidden) {
+        show();
+      } else {
+        hide();
+      }
+    }
+  }
+
+  const $gameOver = document.querySelector('#game-over') as HTMLElement;
+
+  return {
+    setGameOver() {
+      $gameOver.hidden = false;
+      window.removeEventListener('blur', show);
+      window.removeEventListener('keydown', handleKeyDown);
+    }
+  };
 }
 

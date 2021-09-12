@@ -3,6 +3,7 @@ import { init as initInput, InputSource } from './input';
 import { init as initRenderer } from './render';
 import { init as initPhysics } from './physics';
 import { init as initMenu } from './menu';
+import { init as initScore } from './score';
 import { WORLD_SIZE } from './config';
 
 const $canvas = document.querySelector('#canvas') as HTMLCanvasElement;
@@ -21,7 +22,7 @@ const { getInput, setInputSource } = initInput(
   }
 );
 
-initMenu(() => {
+const { setGameOver } = initMenu(() => {
   menuPause = false;
 }, () => {
   menuPause = true;
@@ -29,11 +30,15 @@ initMenu(() => {
   setInputSource(source);
 });
 
+const { addPoints } = initScore();
+
 const { calculate } = initPhysics();
 
 const { draw } = initRenderer($canvas);
 
 let lastTime = 0;
+
+addPoints(0);
 
 window.requestAnimationFrame(update);
 
@@ -48,13 +53,20 @@ function update(time: number) {
   const {
     playerPosition,
     projectiles,
-    enemies
+    enemies,
+    particles,
+    gameOver
   } = calculate({
-    input, deltaTime
+    input, deltaTime, addPoints
   });
   draw({
     playerPosition,
     projectiles,
-    enemies
+    enemies,
+    particles
   });
+
+  if (gameOver) {
+    setGameOver();
+  }
 }
