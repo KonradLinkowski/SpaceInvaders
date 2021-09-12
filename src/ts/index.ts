@@ -4,7 +4,10 @@ import { init as initRenderer } from './render';
 import { init as initPhysics } from './physics';
 import { init as initMenu } from './menu';
 import { init as initScore } from './score';
+import { init as initBackground } from './background';
 import { WORLD_SIZE } from './config';
+
+initBackground();
 
 const $canvas = document.querySelector('#canvas') as HTMLCanvasElement;
 $canvas.width = WORLD_SIZE;
