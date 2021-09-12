@@ -15,3 +15,69 @@ body {
 #canvas {
   border: 1px solid black;
 }
+
+.mobile {
+  $size: 200px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  &-joystick {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+
+    border-radius: 50%;
+    border: 1px solid black;
+    width: $size;
+    height: $size;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      border: 1px solid black;
+      width: $size / 2;
+      height: $size / 2;
+      transform: translate(-50%, -50%);
+    }
+
+    &-handle {
+      $handle-size: $size / 4;
+      position: relative;
+      top: 50%;
+      left: 50%;
+      width: $handle-size;
+      height: $handle-size;
+      transform: translate($size * 3 / 8, 0);
+
+      &-image {
+        position: relative;
+        transform: translate(-50%, -50%);
+        background-color: lightgray;
+        border-radius: 50%;
+        border: 1px solid black;
+        height: $handle-size;
+        width: $handle-size;
+      }
+    }
+  }
+
+  &-actions {
+    position: absolute;
+    bottom: $size / 4;
+    right: $size / 4;
+
+    &-button {
+      border-radius: 50%;
+      border: 1px solid black;
+      width: 100px;
+      height: 100px;
+      font-size: 40px;
+    }
+  }
+}

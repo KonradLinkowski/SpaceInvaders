@@ -1,5 +1,5 @@
 import { log } from './debug';
-import { init as initGamepad } from './gamepad';
+import { init as initInput, InputSource } from './input';
 import { init as initRenderer } from './render';
 import { init as initPhysics } from './physics';
 
@@ -8,9 +8,19 @@ const $canvas = document.querySelector('#canvas') as HTMLCanvasElement;
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-const { getInput } = initGamepad(() => {
-  window.requestAnimationFrame(update);
-});
+let animationHandle = null;
+
+const { getInput, setInputSource } = initInput(
+  InputSource.Mouse,
+  () => {
+    animationHandle = window.requestAnimationFrame(update);
+  },
+  () => {
+    if (!animationHandle) return;
+    window.cancelAnimationFrame(animationHandle);
+    animationHandle = null;
+  }
+);
 
 const { calculate } = initPhysics();
 
@@ -33,7 +43,7 @@ function update(time: number) {
     playerPosition,
     projectiles
   });
-  window.requestAnimationFrame(update);
+  animationHandle = window.requestAnimationFrame(update);
 }
 
 function resizeCanvas() {
