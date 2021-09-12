@@ -8,6 +8,8 @@ export function init() {
   const $score = document.querySelector('#score');
   const $gameOverScore = document.querySelector('#game-over-score');
   const $gameOverHighscore = document.querySelector('#game-over-highscore');
+  const $gameOverButton = document.querySelector('#game-over-button');
+  $gameOverButton.addEventListener('click', () => location.reload());
 
   return {
     addPoints

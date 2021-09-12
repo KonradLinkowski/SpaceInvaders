@@ -60,7 +60,7 @@ export function init(): InitFunctionOutput {
       y: ny
     };
 
-    handle.style.transform = `translate(${nx * 75}px, ${ny * 75}px)`;
+    handle.style.transform = `translate(${nx * 56.26}px, ${ny * 56.25}px)`;
   }
 }
 

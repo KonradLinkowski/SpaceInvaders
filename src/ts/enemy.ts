@@ -1,4 +1,5 @@
 import { PolarVector, toVector } from './math/polar-vector';
+import { WORLD_SIZE } from './config';
 
 export enum Type {
   Basic = 'Basic',
@@ -20,7 +21,7 @@ export interface NextPositionData {
 }
 
 export function createEnemy(type: Type, position?: PolarVector): Enemy {
-  const pos = position || { angle: Math.random() * Math.PI * 2, radius: 400 };
+  const pos = position || { angle: Math.random() * Math.PI * 2, radius: WORLD_SIZE };
   return {
     age: 0,
     initialPosition: pos,
