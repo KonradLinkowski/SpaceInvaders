@@ -4,7 +4,8 @@ import { WORLD_SIZE } from './config';
 export enum Type {
   Basic = 'Basic',
   Spinner = 'Spinner',
-  ZigZag = 'ZigZag'
+  ZigZag = 'ZigZag',
+  Oscillator = 'Oscillator'
 }
 
 export interface Enemy {
@@ -12,7 +13,7 @@ export interface Enemy {
   position: PolarVector;
   type: Type;
   age: number;
-  speed: number;
+  direction: number;
 }
 
 export interface NextPositionData {
@@ -27,7 +28,7 @@ export function createEnemy(type: Type, position?: PolarVector): Enemy {
     initialPosition: pos,
     position: pos,
     type,
-    speed: Math.random() * 2 - 1
+    direction: [-1, 1][Math.random() * 2 | 0]
   };
 }
 
@@ -46,28 +47,36 @@ const movePatterns: { [type in Type]: (data: NextPositionData) => PolarVector } 
   },
   Spinner({ enemy, deltaTime }: NextPositionData) {
     const newPos = {
-      angle: enemy.position.angle + enemy.speed * deltaTime * 1,
+      angle: enemy.position.angle + enemy.direction * deltaTime * 1,
       radius: enemy.position.radius - deltaTime * 100
     }
     return newPos;
   },
   ZigZag({ enemy, deltaTime }: NextPositionData) {
-    const angle = enemy.initialPosition.angle + enemy.speed * Math.sin(enemy.age) * Math.PI;
+    const angle = enemy.initialPosition.angle + enemy.direction * Math.sin(enemy.age) * Math.PI;
     const newPos = {
       angle,
       radius: enemy.position.radius - deltaTime * 50
+    }
+    return newPos;
+  },
+  Oscillator({ enemy, deltaTime }: NextPositionData) {
+    const angle = enemy.position.angle + enemy.direction * deltaTime * 1;
+    const radius = Math.sin(enemy.age * 10) * 50 + WORLD_SIZE / 2 - enemy.age * 50;
+    const newPos = {
+      angle,
+      radius
     }
     return newPos;
   }
 }
 
 export function getValue(type: Type): number {
-  switch (type) {
-    case Type.Basic:
-      return 5;
-    case Type.Spinner:
-      return 10;
-    case Type.ZigZag:
-      return 15;
-  }
+  const values: { [key in Type]: number } = {
+    [Type.Basic]: 5,
+    [Type.Spinner]: 10,
+    [Type.ZigZag]: 15,
+    [Type.Oscillator]: 20
+  };
+  return values[type];
 }
