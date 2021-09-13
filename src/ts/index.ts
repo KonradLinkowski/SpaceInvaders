@@ -30,6 +30,7 @@ const { setGameOver } = initMenu(() => {
 }, () => {
   menuPause = true;
 }, (source: InputSource) => {
+  inputPause = true;
   setInputSource(source);
 });
 
