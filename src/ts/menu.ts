@@ -58,6 +58,7 @@ export function init(start: () => void, stop: () => void, inputChange: (source: 
 
   return {
     setGameOver() {
+      (document.querySelector('.score') as HTMLElement).hidden = true;
       $gameOver.hidden = false;
       window.removeEventListener('blur', show);
       window.removeEventListener('keydown', handleKeyDown);

@@ -1,3 +1,18 @@
+body, button {
+  font-family: "Courier New", "Courier", "monospace";
+  font-size: 20px;
+}
+
+h1, h2 {
+  margin-top: 0px;
+}
+
+button {
+  padding: 1rem;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
 body {
   box-sizing: border-box;
   margin: 0;
@@ -106,6 +121,7 @@ body {
 }
 
 .menu {
+  text-align: center;
   position: fixed;
   top: 0;
   left: 0;
@@ -125,10 +141,15 @@ body {
     border: 1px solid black;
     padding: 2rem;
     background-color: white;
+
+    button {
+      margin-bottom: 20px;
+    }
   }
 }
 
 .game-over {
+  text-align: center;
   position: fixed;
   top: 0;
   left: 0;
@@ -142,12 +163,43 @@ body {
   align-items: center;
   flex-direction: column;
 
+  p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  button {
+    margin-top: 20px;
+  }
+
   &-header {
     font-size: 50px;
   }
 
   &-score {
     font-size: 30px;
+  }
+}
+
+#input-source {
+  display: flex;
+  padding: 1rem;
+
+  input, label {
+    cursor: pointer;
+  }
+
+  label {
+    margin-left: 5px;
+  }
+
+  div {
+    display: flex;
+    margin-right: 30px;
+
+    &:last-child {
+      margin-right: 0;
+    }
   }
 }
 
