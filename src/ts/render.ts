@@ -20,6 +20,15 @@ export function init($canvas: HTMLCanvasElement) {
   };
 }
 
+const colors = {
+  enemy: `hsl(120, 100%, 50%)`,
+  particle: `hsl(300, 100%, 50%)`,
+  center: `hsl(260, 100%, 50%)`,
+  player: `hsl(0, 100%, 50%)`,
+  projectile: `hsl(60, 100%, 50%)`,
+  
+};
+
 function draw(
   $canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
@@ -55,14 +64,14 @@ function draw(
       $canvas.width / 2,
       $canvas.height / 2,
       5,
-      'purple'
+      colors.center
     );
 
     drawCircle(
       $canvas.width / 2,
       $canvas.height / 2,
       CENTER_RADIUS,
-      'purple',
+      colors.center,
       true
     );
   }
@@ -72,7 +81,7 @@ function draw(
       playerPosition.x + $canvas.width / 2,
       playerPosition.y + $canvas.height / 2,
       PLAYER_SIZE,
-      'red'
+      colors.player
     );
   }
   
@@ -83,7 +92,7 @@ function draw(
         vector.x,
         vector.y,
         PROJECTILE_SIZE,
-        'blue'
+        colors.projectile
       );
     }
   }
@@ -95,7 +104,7 @@ function draw(
         vector.x,
         vector.y,
         ENEMY_SIZE,
-        'green'
+        colors.enemy
       );
     }
   }
@@ -116,6 +125,10 @@ function draw(
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.closePath();
+    ctx.shadowColor = color;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+    ctx.shadowBlur = 10;
     if (hollow) {
       ctx.strokeStyle = color;
       ctx.lineWidth = 3;
@@ -124,5 +137,7 @@ function draw(
       ctx.fillStyle = color;
       ctx.fill();
     }
+    // reset
+    ctx.shadowBlur = 0;
   }
 }
